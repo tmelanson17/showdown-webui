@@ -17,7 +17,7 @@ namespace http = beast::http;           // from <boost/beast/http.hpp>
 namespace websocket = beast::websocket; // from <boost/beast/websocket.hpp>
 namespace net = boost::asio;            // from <boost/asio.hpp>
 using tcp = net::ip::tcp;               // from <boost/asio/ip/tcp.hpp>
-constexpr std::string_view kWebSocketPath = "/showdown/websocket";
+constexpr beast::string_view kWebSocketPath = "/showdown/websocket";
 
 class WebSocketClient {
 public:
@@ -125,6 +125,7 @@ public:
             if (!message.has_value()) {
                 break;
             }
+            std::cout << "Received message: " << message.value() << std::endl;
             HandleMessage(message.value());
         }
     }

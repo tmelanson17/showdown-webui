@@ -26,8 +26,8 @@ public:
 
     std::string Login(const UserInfo& user_info);
 private:
-    static constexpr std::string_view kHost{"play.pokemonshowdown.com"};
-    static constexpr std::string_view kTarget{"/api/login"};
+    static constexpr boost::beast::string_view kHost{"play.pokemonshowdown.com"};
+    static constexpr boost::beast::string_view kTarget{"/api/login"};
     static constexpr int kVersion = 11;
 
     boost::asio::ssl::context ssl_context_{boost::asio::ssl::context::sslv23_client};
