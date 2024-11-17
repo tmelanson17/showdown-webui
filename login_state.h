@@ -21,7 +21,7 @@ public:
             // Send the login information to the server.
             // TODO: Make the string concatenation more efficient.
             context->write( 
-                std::string("/trn") + std::string(kUsername) + std::string(",0,") + user_login_.Login(user_info));
+                std::string("/trn ") + std::string(kUsername) + std::string(",0,") + user_login_.Login(user_info));
         
             return ShowdownClientStateEnum::kJoinLobby;
         }
@@ -29,7 +29,7 @@ public:
         return ShowdownClientStateEnum::kLoggingIn;
     }
 private:
-    static constexpr std::string_view kUsername{"bot4325"};
+    static constexpr std::string_view kUsername{"bot4352"};
     static constexpr std::string_view kPassword{"p"};
     User user_login_;
 };

@@ -22,7 +22,7 @@ constexpr beast::string_view kWebSocketPath = "/showdown/websocket";
 class WebSocketClient {
 public:
     WebSocketClient(net::io_context& ioc, const std::string& host, const std::string& port, std::shared_ptr<util::SharedQueue<std::string>> message_queue)
-        : resolver_(ioc), ws_(ioc), host_(host), message_queue_(message_queue) {
+        : strand_(net::make_strand(ioc)), resolver_(ioc), ws_(net::make_strand(ioc)), host_(host), message_queue_(message_queue) {
         
         // Resolve the hostname and port synchronously
         auto const results = resolver_.resolve(host, port);
@@ -38,10 +38,14 @@ public:
     }
 
     void write(const std::string& message) {
-        ws_.async_write(net::buffer(message),
-            [this](beast::error_code ec, std::size_t bytes_transferred) {
-                on_write(ec, bytes_transferred);
-            });
+        net::dispatch(strand_, [this, message](){
+            std::cout << "Writing message: " << message << std::endl;
+            std::string prepended = "|" + message;
+            ws_.async_write(net::buffer(prepended),
+                [this](beast::error_code ec, std::size_t bytes_transferred) {
+                    on_write(ec, bytes_transferred);
+                });
+        });
     }
 
     void close() {
@@ -97,6 +101,7 @@ private:
         std::cerr << what << ": " << ec.message() << "\n";
     }
 
+    net::strand<net::io_context::executor_type> strand_;
     tcp::resolver resolver_;
     websocket::stream<tcp::socket> ws_;
     beast::flat_buffer buffer_;

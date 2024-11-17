@@ -6,7 +6,7 @@ namespace ps_client {
 class LobbyState : public ShowdownClientStateMachine::StateAction {
 public:
     void EnterState(ShowdownClientStateMachine::ContextType* context) override {
-        context->write("|/join lobby");
+        context->write("/join lobby");
     }
 
     ShowdownClientStateEnum NextState(ShowdownClientStateMachine::ContextType* context) override {
