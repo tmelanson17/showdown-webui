@@ -1,4 +1,5 @@
-project(websocket_client)
+cmake_policy(SET CMP0048 NEW)
+project(websocket_client VERSION 1.0.0)
 
 add_subdirectory(json)
 add_subdirectory(shared_queue)
